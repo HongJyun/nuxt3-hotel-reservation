@@ -1,0 +1,40 @@
+@import url('~/assets/css/fontello-826a56e9/css/fontello.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  input[type='date']::-webkit-inner-spin-button,
+  input[type='date']::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+}
+
+.stripe-decor::after {
+  content: '';
+  position: absolute;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.15) 7px,
+    rgb(255, 255, 255) 7px,
+    rgb(255, 255, 255) 10px
+  );
+}
+
+.stripe-decor--black::after {
+  content: '';
+  position: absolute;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    rgb(255, 255, 255) 1px,
+    rgb(255, 255, 255) 2px
+  );
+}
