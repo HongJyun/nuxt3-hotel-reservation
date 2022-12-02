@@ -10,7 +10,6 @@ export interface IRoomDetails extends Omit<IRoom, 'imageUrl'> {
   imageUrl: string[]
   descriptionShort: {
     [key: string]: any
-    Bed: String[]
   }
   description: string
   checkInAndOut: {
@@ -30,5 +29,5 @@ export interface IApiRoomsResponse {
 export interface IApiRoomDetailResponse {
   success: boolean
   room: IRoomDetails
-  booking: Array<string>
+  booking: Array<number>
 }
