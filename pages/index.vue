@@ -5,6 +5,10 @@ import 'swiper/css'
 import 'swiper/css/effect-fade'
 import { IRoom, IApiRoomsResponse } from '@/types/index'
 
+useHead({
+  title: '首頁'
+})
+
 const { swiperInstance, active, changeSlide, stopAutoplay, startAutoplay, onSlideChange } = useSwiper()
 const { data } = await useFetch<IApiRoomsResponse>('/api/rooms')
 

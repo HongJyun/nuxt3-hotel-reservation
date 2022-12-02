@@ -10,7 +10,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const emit = defineEmits(['update:selected'])
+const emit = defineEmits(['update:selected', 'booked'])
 const selected = toRef(props, 'selected')
 
 const visible = ref(false)
@@ -45,7 +45,7 @@ interface IApiBookResponse {
 const confirm = async () => {
   const { data, error } = await useFetch<IApiBookResponse>('/api/book', {
     method: 'POST',
-    body: { roomId: props.room.id }
+    body: { roomId: props.room.id, dates: selected.value }
   })
   if (!data.value?.success || error.value) {
     $msgBox({ title: '預約失敗', message: data.value?.message as string, confirmBtnText: '返回' })
@@ -55,6 +55,9 @@ const confirm = async () => {
       title: '預約成功',
       message: `<img class="mx-auto mb-6 w-[65px] h-[65px]" src=${img}>`,
       confirmBtnText: '回頁面'
+    }).then(() => {
+      emit('booked')
+      emit('update:selected', [])
     })
   }
   visible.value = false

@@ -4,8 +4,8 @@ const props = defineProps({
     type: Array<number>,
     default: () => []
   },
-  occupiedDates: {
-    type: Array,
+  booking: {
+    type: Array<number>,
     default: () => []
   }
 })
@@ -31,16 +31,16 @@ const getMonthDays = (year: number, month: number): number => {
 
 const getWeek = (year: number, month: number, day: number) => {
   const date = new Date()
-  date.setFullYear(year, month - 1, day)
-  return date.getDay()
+  date.setUTCFullYear(year, month - 1, day)
+  return date.getUTCDay()
 }
 
 const getToday = () => {
   const today = new Date()
-  today.setHours(0)
-  today.setMinutes(0)
-  today.setSeconds(0)
-  today.setMilliseconds(0)
+  today.setUTCHours(0)
+  today.setUTCMinutes(0)
+  today.setUTCSeconds(0)
+  today.setUTCMilliseconds(0)
   return today
 }
 
@@ -53,7 +53,10 @@ const monthCalendar = computed(() => {
   const startDay = getWeek(year.value, month.value, 1)
   return [
     ...new Array(startDay),
-    ...new Array(days).fill(0).map((_, i) => new Date(year.value, month.value - 1, i + 1))
+    ...new Array(days).fill(0).map((_, i) => {
+      const date = new Date(Date.UTC(year.value, month.value - 1, i + 1))
+      return date
+    })
   ]
 })
 
@@ -63,15 +66,18 @@ const changeMonth = (val: number) => {
     month.value = 12
   } else if (month.value + val > 12) {
     year.value += 1
-    month.value = 2
+    month.value = 1
+  } else {
+    month.value += val
   }
-  month.value += val
 }
 
 const selected = toRef(props, 'selected')
 const selectDate = (val: number) => {
   if (+today > val) return
   if (selected.value.includes(val) && selected.value.length !== 2) return
+  const isBooked = props.booking.find((i) => +i === val)
+  if (isBooked) return
   if (selected.value.length === 2) {
     emit('update:selected', [val])
   } else {
@@ -82,12 +88,19 @@ const selectDate = (val: number) => {
 }
 const calCalendarClass = (day: number) => {
   const isPast = +today > day
+
   const isToday = +today === +day
   const isFirst = selected.value[0] === +day
   const isLast = selected.value[1] === +day
   const isSelected = selected.value[0] <= +day && selected.value[1] >= +day
+  const isBooked = props.booking.find((i) => {
+    return +i === day
+  })
+
   if (isPast) {
     return '!cursor-default text-gray-300'
+  } else if (isBooked) {
+    return '!cursor-default stripe-decor--black'
   } else if (isFirst || isLast || isSelected) {
     return 'bg-[#ccc]'
   } else if (isToday) {
@@ -114,9 +127,9 @@ const calCalendarClass = (day: number) => {
     </div>
     <div class="grid grid-cols-7 grid-rows-5 items-center text-center">
       <span
-        v-for="(day, i) of monthCalendar"
-        :key="i"
-        class="flex aspect-square w-full cursor-pointer items-center justify-center"
+        v-for="day of monthCalendar"
+        :key="day"
+        class="calendar-day flex aspect-square w-full cursor-pointer items-center justify-center"
         :class="calCalendarClass(+day)"
         @click="() => selectDate(+day)"
         >{{ day?.getDate() }}</span
@@ -128,5 +141,12 @@ const calCalendarClass = (day: number) => {
 <style lang="scss" scoped>
 .calendar {
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+.calendar-day {
+  position: relative;
+  &.stripe-decor--black::after {
+    @apply inset-0;
+  }
 }
 </style>
