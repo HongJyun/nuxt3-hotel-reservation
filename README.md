@@ -2,6 +2,24 @@
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## Description
+
+A practice project used to learn Nuxt 3.
+
+Tech Stack:
+- FrontEnd:
+  - Nuxt 3
+  - TypeScript
+  - Tailwind CSS
+  
+- BackEnd:
+  - knex
+  - PostgreSQL
+
+UI design:
+https://challenge.thef2e.com/user/1600?schedule=3851#works-3851
+
+
 ## Setup
 
 Make sure to install the dependencies:
