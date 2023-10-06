@@ -66,7 +66,7 @@ const handleChange = (room: IRoom) => {
       <div class="room-number stripe-decor text-[66px] leading-[98px] text-white">
         <span class="relative z-10"> {{ String(active + 1).padStart(2, '0') }} </span>
       </div>
-      <div class="text-[24px] leading-[36px] tracking-[2.5px] text-white">{{ activeRoom.name }}</div>
+      <div class="text-[24px] leading-[36px] tracking-[2.5px] text-white">{{ activeRoom?.name }}</div>
     </div>
     <footer
       class="absolute left-0 bottom-0 min-w-[300px] translate-y-full transform px-[34px] pb-8 md:right-0 md:left-auto md:bottom-[74px] md:translate-y-0 [@media(max-height:800px)]:md:translate-y-1/3"
