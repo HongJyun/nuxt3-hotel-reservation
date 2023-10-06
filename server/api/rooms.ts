@@ -18,6 +18,7 @@ export default defineEventHandler(async () => {
       return { success: true, items }
     })
     .catch((err) => {
+      console.log(err)
       return {
         success: false,
         message: err.toString()
